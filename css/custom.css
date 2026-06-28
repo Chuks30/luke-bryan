@@ -1,0 +1,11 @@
+/*
+  custom.css — Add your own overrides here.
+  This file is linked AFTER the main styles in index.html
+  if you choose to link it. Currently unused.
+
+  Example: override the default PIN
+  (PIN must be changed in index.html JS, not here)
+
+  Example: add a custom font
+  @import url('https://fonts.googleapis.com/css2?family=YourFont&display=swap');
+*/

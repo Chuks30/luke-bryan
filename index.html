@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luke Bryan | Official Site</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   THEME VARIABLES — default: Midnight Gold
+═══════════════════════════════════════════ */
+:root {
+  --accent:    #C8901A;
+  --accent-lt: #E8B84B;
+  --bg:        #0A0905;
+  --bg2:       #1A1610;
+  --bg3:       #2C2218;
+  --text:      #F0E8D8;
+  --muted:     rgba(240,232,216,0.5);
+  --border:    rgba(200,144,26,0.18);
+  --hero-grad: linear-gradient(to bottom, #0F0B06 0%, #1C1208 40%, #2A1A08 65%, #0A0905 100%);
+  --glow:      rgba(200,144,26,0.28);
+}
+
+/* ── THEME: Steel Blue ── */
+[data-theme="steel"] {
+  --accent:    #3A7BD5;
+  --accent-lt: #6FAFF5;
+  --bg:        #050A12;
+  --bg2:       #0D1520;
+  --bg3:       #162030;
+  --text:      #D8E8F8;
+  --muted:     rgba(216,232,248,0.5);
+  --border:    rgba(58,123,213,0.22);
+  --hero-grad: linear-gradient(to bottom, #050A12 0%, #0A1428 40%, #0D1C38 65%, #050A12 100%);
+  --glow:      rgba(58,123,213,0.28);
+}
+
+/* ── THEME: Crimson Night ── */
+[data-theme="crimson"] {
+  --accent:    #C0392B;
+  --accent-lt: #E74C3C;
+  --bg:        #0A0505;
+  --bg2:       #1A0A0A;
+  --bg3:       #2C1212;
+  --text:      #F8E8E8;
+  --muted:     rgba(248,232,232,0.5);
+  --border:    rgba(192,57,43,0.22);
+  --hero-grad: linear-gradient(to bottom, #0F0606 0%, #1C0A0A 40%, #2A0E0E 65%, #0A0505 100%);
+  --glow:      rgba(192,57,43,0.3);
+}
+
+/* ── THEME: Forest Sage ── */
+[data-theme="forest"] {
+  --accent:    #2E7D52;
+  --accent-lt: #4CAF80;
+  --bg:        #050A06;
+  --bg2:       #0A1510;
+  --bg3:       #102018;
+  --text:      #D8F0E4;
+  --muted:     rgba(216,240,228,0.5);
+  --border:    rgba(46,125,82,0.22);
+  --hero-grad: linear-gradient(to bottom, #060C08 0%, #0C1A10 40%, #102018 65%, #050A06 100%);
+  --glow:      rgba(46,125,82,0.28);
+}
+
+/* ── THEME: Pure Light ── */
+[data-theme="light"] {
+  --accent:    #1A5276;
+  --accent-lt: #2874A6;
+  --bg:        #F5F5F0;
+  --bg2:       #EAEAE4;
+  --bg3:       #DDDDD6;
+  --text:      #1A1A1A;
+  --muted:     rgba(26,26,26,0.55);
+  --border:    rgba(26,82,118,0.2);
+  --hero-grad: linear-gradient(to bottom, #E8E8E0 0%, #D8D8D0 40%, #C8C8C0 65%, #F5F5F0 100%);
+  --glow:      rgba(26,82,118,0.15);
+}
+
+/* ══════════════ RESET ══════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* ══════════════════════════════════
+   SETTINGS PANEL
+══════════════════════════════════ */
+#settings-btn {
+  position: fixed; bottom: 28px; right: 28px; z-index: 300;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--accent); color: var(--bg);
+  border: none; cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transition: background 0.2s, transform 0.2s;
+}
+#settings-btn:hover { background: var(--accent-lt); transform: scale(1.08) rotate(30deg); }
+
+#settings-panel {
+  position: fixed; bottom: 88px; right: 28px; z-index: 300;
+  width: 340px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+  transform: translateY(20px) scale(0.95);
+  opacity: 0; pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+#settings-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1; pointer-events: all;
+}
+
+.sp-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sp-title {
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent);
+}
+.sp-close {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 1.1rem; line-height: 1; transition: color 0.2s;
+}
+.sp-close:hover { color: var(--text); }
+
+.sp-section { padding: 18px 22px; border-bottom: 1px solid var(--border); }
+.sp-section-title {
+  font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+
+/* Theme cards */
+.theme-cards { display: flex; flex-direction: column; gap: 7px; }
+.theme-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; cursor: pointer;
+  border: 1.5px solid transparent;
+  border-radius: 4px;
+  transition: border-color 0.18s, background 0.18s;
+  background: rgba(255,255,255,0.03);
+}
+.theme-card:hover { background: rgba(255,255,255,0.07); }
+.theme-card.active { border-color: var(--accent-lt) !important; background: rgba(255,255,255,0.07); }
+
+.theme-preview {
+  width: 46px; height: 32px; border-radius: 3px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+}
+.theme-preview::before {
+  content: ''; position: absolute; inset: 0;
+}
+.theme-preview::after {
+  content: ''; position: absolute;
+  bottom: 6px; left: 6px; right: 6px; height: 2px;
+  border-radius: 1px;
+}
+/* Gold */
+.tp-gold { background: linear-gradient(135deg, #0F0B06 0%, #2A1A08 100%); }
+.tp-gold::before { background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(200,144,26,0.4) 0%, transparent 70%); }
+.tp-gold::after  { background: linear-gradient(to right, transparent, #C8901A, transparent); }
+/* Steel */
+.tp-steel { background: linear-gradient(135deg, #050A12 0%, #0D1C38 100%); }
+.tp-steel::before { background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(58,123,213,0.4) 0%, transparent 70%); }
+.tp-steel::after  { background: linear-gradient(to right, transparent, #3A7BD5, transparent); }
+/* Crimson */
+.tp-crimson { background: linear-gradient(135deg, #0F0606 0%, #2A0E0E 100%); }
+.tp-crimson::before { background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(192,57,43,0.5) 0%, transparent 70%); }
+.tp-crimson::after  { background: linear-gradient(to right, transparent, #C0392B, transparent); }
+/* Forest */
+.tp-forest { background: linear-gradient(135deg, #060C08 0%, #102018 100%); }
+.tp-forest::before { background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(46,125,82,0.45) 0%, transparent 70%); }
+.tp-forest::after  { background: linear-gradient(to right, transparent, #2E7D52, transparent); }
+/* Light */
+.tp-light { background: linear-gradient(135deg, #E8E8E0 0%, #C8C8C0 100%); }
+.tp-light::before { background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(26,82,118,0.2) 0%, transparent 70%); }
+.tp-light::after  { background: linear-gradient(to right, transparent, #1A5276, transparent); }
+
+.theme-info { flex: 1; }
+.theme-name  { font-size: 0.82rem; font-weight: 500; color: var(--text); line-height: 1.2; }
+.theme-desc  { font-size: 0.65rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; }
+.theme-check {
+  font-size: 0.8rem; color: var(--accent-lt);
+  opacity: 0; transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.theme-card.active .theme-check { opacity: 1; }
+
+/* Toggles */
+.sp-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 0;
+}
+.sp-toggle-label { font-size: 0.82rem; color: var(--text); }
+.toggle-switch {
+  width: 40px; height: 22px; border-radius: 11px;
+  background: var(--bg3); border: 1px solid var(--border);
+  cursor: pointer; position: relative; transition: background 0.25s;
+  flex-shrink: 0;
+}
+.toggle-switch.on { background: var(--accent); border-color: var(--accent-lt); }
+.toggle-switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; transition: transform 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-switch.on::after { transform: translateX(18px); }
+
+/* Font size slider */
+.sp-slider { width: 100%; accent-color: var(--accent); }
+
+.sp-session-left { font-size: 0.65rem; color: var(--accent); }
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  background: linear-gradient(to bottom, rgba(var(--bg-rgb,10,9,5),0.95), transparent);
+  transition: background 0.4s, border-color 0.4s;
+}
+nav.scrolled {
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.1em;
+  color: var(--accent-lt); text-decoration: none; line-height: 1;
+}
+.nav-logo span { display: block; font-size: 0.9rem; letter-spacing: 0.2em; color: color-mix(in srgb, var(--accent-lt) 60%, transparent); }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+  color: color-mix(in srgb, var(--text) 60%, transparent); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent-lt); }
+.nav-settings-hint {
+  font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); opacity: 0.7; cursor: pointer; transition: opacity 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-settings-hint:hover { opacity: 1; }
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 48px 90px; background: var(--bg2); overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 72% 38%, var(--glow) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 30% at 50% 100%, rgba(0,0,0,0.9) 0%, transparent 70%),
+    var(--hero-grad);
+  transition: background 0.5s;
+}
+.horizon {
+  position: absolute; bottom: 260px; left: 0; right: 0; z-index: 1; height: 2px;
+  background: linear-gradient(to right, transparent 0%, var(--accent) 25%, var(--accent-lt) 50%, var(--accent) 75%, transparent 100%);
+  opacity: 0; animation: horizonFade 1.5s 1s forwards; filter: blur(0.5px);
+}
+.horizon::after {
+  content: ''; position: absolute; top: -12px; left: 10%; right: 10%; height: 28px;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent) 12%, transparent), transparent);
+  filter: blur(6px);
+}
+@keyframes horizonFade { to { opacity: 0.7; } }
+.stars {
+  position: absolute; inset: 0; z-index: 1;
+  background-image:
+    radial-gradient(1px 1px at 8%  10%, color-mix(in srgb, var(--accent-lt) 70%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 6%,  color-mix(in srgb, var(--accent-lt) 50%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 18%, color-mix(in srgb, var(--accent-lt) 60%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 28%, color-mix(in srgb, var(--accent-lt) 40%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 22%, color-mix(in srgb, var(--accent-lt) 50%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 32%, color-mix(in srgb, var(--accent-lt) 30%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 38%, color-mix(in srgb, var(--accent-lt) 60%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 8%,  color-mix(in srgb, var(--accent-lt) 40%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 15%, color-mix(in srgb, var(--accent-lt) 50%, transparent) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 14%, color-mix(in srgb, var(--accent-lt) 30%, transparent) 0%, transparent 100%);
+}
+.hero-content { position: relative; z-index: 3; max-width: 680px; }
+.hero-eyebrow {
+  font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 10vw, 8rem); line-height: 0.92; letter-spacing: 0.04em;
+  color: var(--text); margin-bottom: 6px;
+  opacity: 0; animation: fadeUp 0.9s 0.55s forwards;
+}
+.hero-title .gold { color: var(--accent-lt); }
+.hero-album {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  color: color-mix(in srgb, var(--text) 55%, transparent); margin-bottom: 32px;
+  opacity: 0; animation: fadeUp 0.9s 0.7s forwards;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s 0.9s forwards; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: var(--bg);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; padding: 15px 32px; transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--accent-lt); transform: translateY(-2px); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); color: var(--accent-lt);
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  text-decoration: none; padding: 15px 32px; transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover { border-color: var(--accent-lt); color: var(--text); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════
+   CONTENT SECTIONS
+══════════════════════════════════ */
+.section { padding: 88px 48px; border-top: 1px solid var(--border); transition: border-color 0.4s; }
+.sec-label {
+  font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 48px;
+  display: flex; align-items: center; gap: 16px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.album-layout { display: flex; gap: 64px; align-items: flex-start; max-width: 920px; }
+.album-cover {
+  width: 260px; height: 260px; flex-shrink: 0; position: relative;
+  background: var(--bg3);
+  box-shadow: 0 0 60px color-mix(in srgb, var(--accent) 12%, transparent), 0 24px 48px rgba(0,0,0,0.6);
+  overflow: hidden; transition: box-shadow 0.4s;
+}
+.album-cover::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 25%, transparent) 0%, color-mix(in srgb, var(--bg3) 80%, transparent) 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, color-mix(in srgb, var(--accent) 3%, transparent) 3px, color-mix(in srgb, var(--accent) 3%, transparent) 4px);
+}
+.album-cover-title { position: absolute; bottom: 20px; left: 20px; right: 20px; }
+.album-cover-artist {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+  letter-spacing: 0.1em; color: var(--accent-lt); display: block; margin-bottom: 2px;
+}
+.album-cover-name {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 2rem; color: var(--text); display: block; line-height: 1;
+}
+.album-cover-year {
+  position: absolute; top: 20px; right: 20px;
+  font-size: 0.65rem; letter-spacing: 0.2em; color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.album-info { flex: 1; }
+.album-title-main {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem;
+  letter-spacing: 0.06em; color: var(--text); margin-bottom: 4px;
+}
+.album-meta-line {
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px;
+}
+.album-desc { font-size: 0.9rem; line-height: 1.8; color: var(--muted); margin-bottom: 32px; max-width: 380px; }
+.track-list { list-style: none; }
+.track-item {
+  display: flex; align-items: center; gap: 16px; padding: 11px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 8%, transparent);
+  cursor: pointer; transition: all 0.2s;
+}
+.track-item:hover { padding-left: 8px; }
+.track-item:hover .t-name { color: var(--text); }
+.track-item:hover .t-num  { color: var(--accent); }
+.t-num  { font-size: 0.68rem; letter-spacing: 0.1em; color: color-mix(in srgb, var(--accent) 35%, transparent); min-width: 22px; transition: color 0.2s; }
+.t-name { font-size: 0.88rem; color: color-mix(in srgb, var(--text) 65%, transparent); flex: 1; transition: color 0.2s; }
+.t-single {
+  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);
+  padding: 2px 8px; border: 1px solid color-mix(in srgb, var(--accent) 3%, transparent);
+}
+.t-dur { font-size: 0.72rem; color: color-mix(in srgb, var(--text) 30%, transparent); }
+.presave-note {
+  margin-top: 28px; font-size: 0.8rem; color: var(--muted);
+  display: flex; align-items: center; gap: 10px;
+}
+.presave-note::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); opacity: 0.5; }
+
+/* STATS */
+.stats-bar {
+  padding: 56px 48px; border-top: 1px solid var(--border);
+  display: flex; gap: 0; justify-content: space-around; flex-wrap: wrap;
+  background: var(--bg2); transition: background 0.4s;
+}
+.stat { text-align: center; padding: 16px 32px; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; color: var(--accent-lt); line-height: 1; display: block; }
+.stat-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 6px; display: block; }
+
+/* TOUR */
+.tour-grid { display: flex; flex-direction: column; gap: 3px; max-width: 780px; }
+.tour-row {
+  display: flex; align-items: center; gap: 28px;
+  padding: 20px 28px; background: var(--bg2); transition: background 0.2s;
+}
+.tour-row:hover { background: var(--bg3); }
+.tour-date { width: 56px; flex-shrink: 0; text-align: center; }
+.t-month { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.t-day   { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--text); line-height: 1; }
+.tour-sep { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+.tour-info { flex: 1; }
+.t-venue { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+.t-city  { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+.tour-badge { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px; margin-right: 4px; }
+.badge-headline { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 3%, transparent); }
+.badge-stadium  { background: rgba(200,100,26,0.15); color: #E8784B; border: 1px solid rgba(200,100,26,0.3); }
+.tour-ticket {
+  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+  color: var(--accent-lt); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  padding: 9px 20px; text-decoration: none; transition: background 0.2s, color 0.2s; white-space: nowrap;
+}
+.tour-ticket:hover { background: var(--accent); color: var(--bg); }
+
+/* CONTACT */
+.contact-grid { display: flex; flex-direction: column; gap: 3px; max-width: 560px; }
+.contact-card {
+  display: flex; align-items: center; gap: 20px;
+  padding: 22px 28px; background: var(--bg2);
+  text-decoration: none; transition: background 0.2s;
+}
+.contact-card:hover { background: var(--bg3); }
+.contact-card:hover .contact-arrow { transform: translateX(5px); color: var(--accent-lt); }
+.contact-icon {
+  font-size: 1.4rem; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid var(--border); flex-shrink: 0;
+}
+.contact-info { flex: 1; }
+.contact-type  { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+.contact-value { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+.contact-arrow { color: var(--muted); font-size: 1.1rem; transition: transform 0.2s, color 0.2s; }
+
+/* FOOTER */
+footer {
+  padding: 44px 48px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+}
+.footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--accent-lt); }
+.footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+.footer-links a {
+  font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 35%, transparent); text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent-lt); }
+.footer-copy { font-size: 0.68rem; color: color-mix(in srgb, var(--text) 20%, transparent); }
+
+/* ANIMATIONS ON */
+body.animations-off * { animation-duration: 0s !important; transition-duration: 0.05s !important; }
+
+@media (max-width: 700px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero, .section { padding-left: 20px; padding-right: 20px; }
+  .album-layout { flex-direction: column; gap: 32px; }
+  .album-cover { width: 100%; height: 200px; }
+  .stats-bar { padding: 40px 20px; }
+  .tour-row { padding: 16px; gap: 16px; }
+  footer { padding: 36px 20px; flex-direction: column; align-items: flex-start; }
+  #settings-panel { right: 12px; width: calc(100vw - 24px); }
+  #settings-btn { bottom: 20px; right: 20px; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- ════════════════════════════════════
+     SETTINGS BUTTON
+════════════════════════════════════ -->
+<button id="settings-btn" onclick="toggleSettings()" title="Site Settings">⚙</button>
+
+<!-- ════════════════════════════════════
+     SETTINGS PANEL
+════════════════════════════════════ -->
+<div id="settings-panel">
+  <div class="sp-header">
+    <span class="sp-title">⚙ Site Settings</span>
+    <button class="sp-close" onclick="toggleSettings()">✕</button>
+  </div>
+
+  <!-- Theme -->
+  <div class="sp-section">
+    <div class="sp-section-title">🎨 Color Theme</div>
+    <div class="theme-cards">
+      <div class="theme-card active" data-t="gold" onclick="setTheme('gold',this)">
+        <div class="theme-preview tp-gold"></div>
+        <div class="theme-info">
+          <div class="theme-name">Midnight Gold</div>
+          <div class="theme-desc">Warm whiskey · deep night</div>
+        </div>
+        <span class="theme-check">✓</span>
+      </div>
+      <div class="theme-card" data-t="steel" onclick="setTheme('steel',this)">
+        <div class="theme-preview tp-steel"></div>
+        <div class="theme-info">
+          <div class="theme-name">Steel Blue</div>
+          <div class="theme-desc">Cool chrome · midnight sky</div>
+        </div>
+        <span class="theme-check">✓</span>
+      </div>
+      <div class="theme-card" data-t="crimson" onclick="setTheme('crimson',this)">
+        <div class="theme-preview tp-crimson"></div>
+        <div class="theme-info">
+          <div class="theme-name">Crimson Night</div>
+          <div class="theme-desc">Bold red · dark drama</div>
+        </div>
+        <span class="theme-check">✓</span>
+      </div>
+      <div class="theme-card" data-t="forest" onclick="setTheme('forest',this)">
+        <div class="theme-preview tp-forest"></div>
+        <div class="theme-info">
+          <div class="theme-name">Forest Sage</div>
+          <div class="theme-desc">Deep green · earthy calm</div>
+        </div>
+        <span class="theme-check">✓</span>
+      </div>
+      <div class="theme-card" data-t="light" onclick="setTheme('light',this)">
+        <div class="theme-preview tp-light"></div>
+        <div class="theme-info">
+          <div class="theme-name">Pure Light</div>
+          <div class="theme-desc">Clean white · day mode</div>
+        </div>
+        <span class="theme-check">✓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display toggles -->
+  <div class="sp-section">
+    <div class="sp-section-title">Display</div>
+    <div class="sp-toggle-row">
+      <span class="sp-toggle-label">Animations</span>
+      <div class="toggle-switch on" id="toggle-anim" onclick="toggleAnim()"></div>
+    </div>
+    <div class="sp-toggle-row">
+      <span class="sp-toggle-label">Star Field</span>
+      <div class="toggle-switch on" id="toggle-stars" onclick="toggleStars()"></div>
+    </div>
+    <div class="sp-toggle-row">
+      <span class="sp-toggle-label">Horizon Glow</span>
+      <div class="toggle-switch on" id="toggle-horizon" onclick="toggleHorizon()"></div>
+    </div>
+  </div>
+
+  <!-- Font size -->
+  <div class="sp-section">
+    <div class="sp-section-title">Text Size</div>
+    <input type="range" class="sp-slider" min="80" max="120" value="100" id="font-slider"
+      oninput="setFontSize(this.value)" style="width:100%;margin-top:6px;">
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:0.6rem;color:var(--muted)">A</span>
+      <span style="font-size:0.65rem;color:var(--accent)" id="font-label">100%</span>
+      <span style="font-size:0.75rem;color:var(--muted)">A</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<!-- ════════════════════════════════════
+     MAIN SITE
+════════════════════════════════════ -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    Luke Bryan
+    <span>Official</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#music">Music</a></li>
+    <li><a href="#tour">Tour</a></li>
+    <li><a href="#">Videos</a></li>
+    <li><a href="#">Merch</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#">Fan Club</a></li>
+  </ul>
+  <span class="nav-settings-hint" onclick="toggleSettings()">⚙ Settings</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="stars" id="stars-el"></div>
+  <div class="horizon" id="horizon-el"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">New Album · Pre-Order Now</p>
+    <h1 class="hero-title">LUKE<br><span class="gold">BRYAN</span></h1>
+    <p class="hero-album">"Signs" — Out September 18</p>
+    <div class="hero-actions">
+      <a href="#music" class="btn-primary">Pre-Order Signs →</a>
+      <a href="#tour" class="btn-secondary">Word On The Street Tour</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="music">
+  <p class="sec-label">New Album</p>
+  <div class="album-layout">
+    <div class="album-cover">
+      <span class="album-cover-year">MCA Nashville · 2026</span>
+      <div class="album-cover-title">
+        <span class="album-cover-artist">Luke Bryan</span>
+        <span class="album-cover-name">Signs</span>
+      </div>
+    </div>
+    <div class="album-info">
+      <h2 class="album-title-main">Signs</h2>
+      <p class="album-meta-line">MCA Nashville · September 18, 2026</p>
+      <p class="album-desc">Co-written in Nashville farmhouses and finished on the road, Signs is Luke's most personal record in years — built to make you feel good and made for the live show.</p>
+      <ul class="track-list">
+        <li class="track-item"><span class="t-num">01</span><span class="t-name">Word On The Street</span><span class="t-single">Single</span><span class="t-dur">3:38</span></li>
+        <li class="track-item"><span class="t-num">02</span><span class="t-name">Country And She Knows It</span><span class="t-single">Radio</span><span class="t-dur">3:21</span></li>
+        <li class="track-item"><span class="t-num">03</span><span class="t-name">Fish Golf Hunt Drink</span><span class="t-single">Single</span><span class="t-dur">3:54</span></li>
+        <li class="track-item"><span class="t-num">04</span><span class="t-name">Signs</span><span class="t-dur">4:02</span></li>
+        <li class="track-item"><span class="t-num">05</span><span class="t-name">Georgia On A Friday Night</span><span class="t-dur">3:47</span></li>
+      </ul>
+      <p class="presave-note">Pre-order available on all platforms — album out September 18</p>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">32</span><span class="stat-label">No. 1 Hits</span></div>
+  <div class="stat"><span class="stat-num">27B</span><span class="stat-label">Global Streams</span></div>
+  <div class="stat"><span class="stat-num">5×</span><span class="stat-label">ACM Entertainer of the Year</span></div>
+  <div class="stat"><span class="stat-num">14M+</span><span class="stat-label">Tour Tickets Sold</span></div>
+</div>
+
+<section class="section" id="tour">
+  <p class="sec-label">Word On The Street Tour 2026</p>
+  <div class="tour-grid">
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Jun</div><div class="t-day">25</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">PPL Center</div><div class="t-city">Allentown, PA</div></div>
+      <span class="tour-badge badge-headline">Headline</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Aug</div><div class="t-day">01</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">Washington-Grizzly Stadium</div><div class="t-city">Missoula, MT — w/ Jason Aldean</div></div>
+      <span class="tour-badge badge-stadium">Stadium</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Aug</div><div class="t-day">06</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">Hayden Homes Amphitheater</div><div class="t-city">Bend, OR</div></div>
+      <span class="tour-badge badge-headline">Headline</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Aug</div><div class="t-day">16</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">Petco Park</div><div class="t-city">San Diego, CA — w/ Jason Aldean</div></div>
+      <span class="tour-badge badge-stadium">Stadium</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Aug</div><div class="t-day">20</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">Nationals Park</div><div class="t-city">Washington, DC — w/ Jason Aldean</div></div>
+      <span class="tour-badge badge-stadium">Stadium</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+    <div class="tour-row">
+      <div class="tour-date"><div class="t-month">Sep</div><div class="t-day">26</div></div>
+      <div class="tour-sep"></div>
+      <div class="tour-info"><div class="t-venue">Alpine Valley Music Theatre</div><div class="t-city">East Troy, WI — Tour Finale</div></div>
+      <span class="tour-badge badge-headline">Finale</span>
+      <a href="https://wa.me/14024788077" class="tour-ticket">Tickets</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <p class="sec-label">Contact Us</p>
+  <div class="contact-grid">
+    <a href="mailto:thomaslukebryan203@gmail.com" class="contact-card">
+      <div class="contact-icon">✉</div>
+      <div class="contact-info">
+        <div class="contact-type">Email</div>
+        <div class="contact-value">thomaslukebryan203@gmail.com</div>
+      </div>
+      <div class="contact-arrow">→</div>
+    </a>
+    <a href="https://wa.me/14024788077" class="contact-card" target="_blank">
+      <div class="contact-icon">💬</div>
+      <div class="contact-info">
+        <div class="contact-type">WhatsApp</div>
+        <div class="contact-value">+1 402-478-8077</div>
+      </div>
+      <div class="contact-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Luke Bryan</span>
+  <div class="footer-links">
+    <a href="https://open.spotify.com/artist/0BvkDsjIUla7X0k6CSWh1I">Spotify</a>
+    <a href="#">Apple Music</a>
+    <a href="https://www.instagram.com/lukebryan/">Instagram</a>
+    <a href="#">TikTok</a>
+    <a href="#">Fan Club</a>
+    <a href="#">Press</a>
+  </div>
+  <span class="footer-copy">© 2026 Luke Bryan · MCA Nashville</span>
+</footer>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT — Settings
+════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ─── Settings Panel ─── */
+let settingsOpen = false;
+function toggleSettings() {
+  settingsOpen = !settingsOpen;
+  document.getElementById('settings-panel').classList.toggle('open', settingsOpen);
+}
+function closeSettings() {
+  settingsOpen = false;
+  document.getElementById('settings-panel').classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('settings-panel');
+  const btn   = document.getElementById('settings-btn');
+  if (settingsOpen && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+    }
+});
+
+/* ─── Themes ─── */
+function setTheme(name, el) {
+  document.documentElement.setAttribute('data-theme', name === 'gold' ? '' : name);
+  document.querySelectorAll('.theme-card').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ─── Toggles ─── */
+function toggleAnim() {
+  const t = document.getElementById('toggle-anim');
+  t.classList.toggle('on');
+  document.body.classList.toggle('animations-off', !t.classList.contains('on'));
+}
+function toggleStars() {
+  const t = document.getElementById('toggle-stars');
+  t.classList.toggle('on');
+  document.getElementById('stars-el').style.opacity = t.classList.contains('on') ? '1' : '0';
+}
+function toggleHorizon() {
+  const t = document.getElementById('toggle-horizon');
+  t.classList.toggle('on');
+  document.getElementById('horizon-el').style.opacity = t.classList.contains('on') ? '' : '0';
+}
+
+/* ─── Font Size ─── */
+function setFontSize(val) {
+  document.documentElement.style.fontSize = val + '%';
+  document.getElementById('font-label').textContent = val + '%';
+}
+
+/* ─── Nav scroll ─── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ─── Track clicks ─── */
+document.querySelectorAll('.track-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.track-item').forEach(x => x.style.color = '');
+    item.style.color = 'var(--accent-lt)';
+  });
+});
+</script>
+
+
+</body>
+</html>
